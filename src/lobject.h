@@ -47,7 +47,7 @@ typedef union GCObject GCObject;
 ** Common header in struct form
 */
 typedef struct GCheader {
-  CommonHeader;
+    CommonHeader;
 } GCheader;
 
 
@@ -57,10 +57,10 @@ typedef struct GCheader {
 ** Union of all Lua values
 */
 typedef union {
-  GCObject *gc;
-  void *p;
-  lua_Number n;
-  int b;
+    GCObject *gc;
+    void *p;
+    lua_Number n;
+    int b;
 } Value;
 
 
@@ -71,7 +71,7 @@ typedef union {
 #define TValuefields	Value value; int tt
 
 typedef struct lua_TValue {
-  TValuefields;
+    TValuefields;
 } TValue;
 
 
@@ -197,13 +197,14 @@ typedef TValue *StkId;  /* index to stack elements */
 ** String headers for string table
 */
 typedef union TString {
-  L_Umaxalign dummy;  /* ensures maximum alignment for strings */
-  struct {
-    CommonHeader;
-    lu_byte reserved;
-    unsigned int hash;
-    size_t len;
-  } tsv;
+    // 数据对齐
+    L_Umaxalign dummy;  /* ensures maximum alignment for strings */
+    struct {
+        CommonHeader;
+        lu_byte reserved;
+        unsigned int hash;
+        size_t len;
+    } tsv;
 } TString;
 
 
@@ -213,13 +214,13 @@ typedef union TString {
 
 // 这里为什么需要使用union类型？
 typedef union Udata {
-  L_Umaxalign dummy;  /* ensures maximum alignment for `local' udata */
-  struct {
-    CommonHeader;
-    struct Table *metatable;
-    struct Table *env;
-    size_t len;
-  } uv;
+    L_Umaxalign dummy;  /* ensures maximum alignment for `local' udata */
+    struct {
+        CommonHeader;
+        struct Table *metatable;
+        struct Table *env;
+        size_t len;
+    } uv;
 } Udata;
 
 
@@ -230,30 +231,30 @@ typedef union Udata {
 */
 // 存放函数原型的数据结构
 typedef struct Proto {
-  CommonHeader;
-  TValue *k;  /* constants used by the function */
-  // 存放函数体的opcode
-  Instruction *code;
-  // 在这个函数中定义的函数
-  struct Proto **p;  /* functions defined inside the function */
-  int *lineinfo;  /* map from opcodes to source lines */
-  // 存放局部变量的数组
-  struct LocVar *locvars;  /* information about local variables */
-  TString **upvalues;  /* upvalue names */
-  TString  *source;
-  int sizeupvalues;
-  int sizek;  /* size of `k' */
-  int sizecode;
-  int sizelineinfo;
-  int sizep;  /* size of `p' */
-  int sizelocvars;
-  int linedefined;
-  int lastlinedefined;
-  GCObject *gclist;
-  lu_byte nups;  /* number of upvalues */
-  lu_byte numparams;
-  lu_byte is_vararg;
-  lu_byte maxstacksize;
+    CommonHeader;
+    TValue *k;  /* constants used by the function */
+    // 存放函数体的opcode
+    Instruction *code;
+    // 在这个函数中定义的函数
+    struct Proto **p;  /* functions defined inside the function */
+    int *lineinfo;  /* map from opcodes to source lines */
+    // 存放局部变量的数组
+    struct LocVar *locvars;  /* information about local variables */
+    TString **upvalues;  /* upvalue names */
+    TString  *source;
+    int sizeupvalues;
+    int sizek;  /* size of `k' */
+    int sizecode;
+    int sizelineinfo;
+    int sizep;  /* size of `p' */
+    int sizelocvars;
+    int linedefined;
+    int lastlinedefined;
+    GCObject *gclist;
+    lu_byte nups;  /* number of upvalues */
+    lu_byte numparams;
+    lu_byte is_vararg;
+    lu_byte maxstacksize;
 } Proto;
 
 
@@ -264,9 +265,9 @@ typedef struct Proto {
 
 // 存放局部变量的结构体
 typedef struct LocVar {
-  TString *varname;
-  int startpc;  /* first point where variable is active */
-  int endpc;    /* first point where variable is dead */
+    TString *varname;
+    int startpc;  /* first point where variable is active */
+    int endpc;    /* first point where variable is dead */
 } LocVar;
 
 
@@ -276,17 +277,17 @@ typedef struct LocVar {
 */
 
 typedef struct UpVal {
-  CommonHeader;
-  TValue *v;  /* points to stack or to its own value */
-  union {
-	// 当这个upval被close时,保存upval的值,后面可能还会被引用到
-    TValue value;  /* the value (when closed) */
-    // 当这个upval还在open状态时,以下链表串连在openupval链表中
-    struct {  /* double linked list (when open) */
-      struct UpVal *prev;
-      struct UpVal *next;
-    } l;
-  } u;
+    CommonHeader;
+    TValue *v;  /* points to stack or to its own value */
+    union {
+        // 当这个upval被close时,保存upval的值,后面可能还会被引用到
+        TValue value;  /* the value (when closed) */
+        // 当这个upval还在open状态时,以下链表串连在openupval链表中
+        struct {  /* double linked list (when open) */
+            struct UpVal *prev;
+            struct UpVal *next;
+        } l;
+    } u;
 } UpVal;
 
 
@@ -299,22 +300,22 @@ typedef struct UpVal {
 	struct Table *env
 
 typedef struct CClosure {
-  ClosureHeader;
-  lua_CFunction f;
-  TValue upvalue[1];
+    ClosureHeader;
+    lua_CFunction f;
+    TValue upvalue[1];
 } CClosure;
 
 
 typedef struct LClosure {
-  ClosureHeader;
-  struct Proto *p;
-  UpVal *upvals[1];
+    ClosureHeader;
+    struct Proto *p;
+    UpVal *upvals[1];
 } LClosure;
 
 
 typedef union Closure {
-  CClosure c;
-  LClosure l;
+    CClosure c;
+    LClosure l;
 } Closure;
 
 
@@ -327,30 +328,30 @@ typedef union Closure {
 */
 
 typedef union TKey {
-  struct {
-    TValuefields;
-    struct Node *next;  /* for chaining */
-  } nk;
-  TValue tvk;
+    struct {
+        TValuefields;
+        struct Node *next;  /* for chaining */
+    } nk;
+    TValue tvk;
 } TKey;
 
 // 每个节点都有key和val
 typedef struct Node {
-  TValue i_val;
-  TKey i_key;
+    TValue i_val;
+    TKey i_key;
 } Node;
 
 
 typedef struct Table {
-  CommonHeader;
-  lu_byte flags;  /* 1<<p means tagmethod(p) is not present */ 
-  lu_byte lsizenode;  /* log2 of size of `node' array */
-  struct Table *metatable;
-  TValue *array;  /* array part */
-  Node *node;
-  Node *lastfree;  /* any free position is before this position */
-  GCObject *gclist;
-  int sizearray;  /* size of `array' array */
+    CommonHeader;
+    lu_byte flags;  /* 1<<p means tagmethod(p) is not present */
+    lu_byte lsizenode;  /* log2 of size of `node' array */
+    struct Table *metatable;
+    TValue *array;  /* array part */
+    Node *node;
+    Node *lastfree;  /* any free position is before this position */
+    GCObject *gclist;
+    int sizearray;  /* size of `array' array */
 } Table;
 
 
@@ -381,7 +382,7 @@ LUAI_FUNC int luaO_fb2int (int x);
 LUAI_FUNC int luaO_rawequalObj (const TValue *t1, const TValue *t2);
 LUAI_FUNC int luaO_str2d (const char *s, lua_Number *result);
 LUAI_FUNC const char *luaO_pushvfstring (lua_State *L, const char *fmt,
-                                                       va_list argp);
+        va_list argp);
 LUAI_FUNC const char *luaO_pushfstring (lua_State *L, const char *fmt, ...);
 LUAI_FUNC void luaO_chunkid (char *out, const char *source, size_t len);
 

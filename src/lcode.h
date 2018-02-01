@@ -25,12 +25,12 @@
 */
 // 二元操作符
 typedef enum BinOpr {
-  OPR_ADD, OPR_SUB, OPR_MUL, OPR_DIV, OPR_MOD, OPR_POW,
-  OPR_CONCAT,
-  OPR_NE, OPR_EQ,
-  OPR_LT, OPR_LE, OPR_GT, OPR_GE,
-  OPR_AND, OPR_OR,
-  OPR_NOBINOPR // 非二元操作符
+    OPR_ADD, OPR_SUB, OPR_MUL, OPR_DIV, OPR_MOD, OPR_POW,
+    OPR_CONCAT,
+    OPR_NE, OPR_EQ,
+    OPR_LT, OPR_LE, OPR_GT, OPR_GE,
+    OPR_AND, OPR_OR,
+    OPR_NOBINOPR // 非二元操作符
 } BinOpr;
 
 // 一元操作符,MINUS是求负数
