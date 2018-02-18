@@ -201,7 +201,7 @@ typedef union TString {
     L_Umaxalign dummy;  /* ensures maximum alignment for strings */
     struct {
         CommonHeader;
-        lu_byte reserved;
+        lu_byte reserved; // GC标记位
         unsigned int hash;
         size_t len;
     } tsv;
@@ -344,7 +344,7 @@ typedef struct Node {
 
 typedef struct Table {
     CommonHeader;
-    lu_byte flags;  /* 1<<p means tagmethod(p) is not present */
+    lu_byte flags;  /* 1<<p means tagmethod(p) is not present */ // 元方法
     lu_byte lsizenode;  /* log2 of size of `node' array */
     struct Table *metatable;
     TValue *array;  /* array part */
